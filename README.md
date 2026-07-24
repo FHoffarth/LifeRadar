@@ -74,3 +74,5 @@ LifeRadar/
 │   └── vite.config.ts
 └── .gitignore
 ```
+
+Bis zur ausdrücklichen Lizenzierung bleiben alle Rechte vorbehalten.
