@@ -12,18 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          sparse-checkout-cone-mode: false
-          sparse-checkout: ''
-
-      - name: Debug checkout
-        run: |
-          echo "=== Root directory ==="
-          ls -la
-          echo "=== frontend directory ==="
-          ls -la frontend/
-          echo "=== package-lock.json exists? ==="
-          test -f frontend/package-lock.json && echo "YES" || echo "NO"
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -33,13 +21,13 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: |
-          pwd
-          ls -la frontend/package-lock.json
-          cd frontend && pwd && ls -la package-lock.json && npm ci
+        working-directory: frontend
+        run: npm ci
 
       - name: Run tests
-        run: cd frontend && npm test
+        working-directory: frontend
+        run: npm test
 
       - name: Build frontend
-        run: cd frontend && npm run build
+        working-directory: frontend
+        run: npm run build
