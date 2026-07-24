@@ -24,13 +24,13 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        working-directory: frontend
-        run: npm ci
+        run: |
+          pwd
+          ls -la frontend/package-lock.json
+          cd frontend && pwd && ls -la package-lock.json && npm ci
 
       - name: Run tests
-        working-directory: frontend
-        run: npm test
+        run: cd frontend && npm test
 
       - name: Build frontend
-        working-directory: frontend
-        run: npm run build
+        run: cd frontend && npm run build
