@@ -16,6 +16,15 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: ''
 
+      - name: Debug checkout
+        run: |
+          echo "=== Root directory ==="
+          ls -la
+          echo "=== frontend directory ==="
+          ls -la frontend/
+          echo "=== package-lock.json exists? ==="
+          test -f frontend/package-lock.json && echo "YES" || echo "NO"
+
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
