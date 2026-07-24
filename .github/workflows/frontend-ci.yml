@@ -13,7 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          sparse-checkout-cone-mode: false
+          sparse-checkout: ''
+
+      - name: Debug checkout
+        run: ls -la && ls -la frontend/
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
