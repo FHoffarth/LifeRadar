@@ -27,7 +27,9 @@ jobs:
         run: |
           pwd
           ls -la frontend/package-lock.json
-          cd frontend && pwd && ls -la package-lock.json && npm ci
+          cd frontend && pwd && ls -la package-lock.json
+          head -5 package-lock.json
+          npm ci 2>&1 | head -30
 
       - name: Run tests
         run: cd frontend && npm test
