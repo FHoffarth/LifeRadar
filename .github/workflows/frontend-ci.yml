@@ -15,11 +15,6 @@ jobs:
         with:
           sparse-checkout: ''
 
-      - name: Debug checkout
-        run: |
-          ls -la
-          ls -la frontend/
-
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
