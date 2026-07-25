@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StateProvider } from './StateContext';
+import { RadarItemsProvider } from './context/RadarItemsContext';
 import { Layout } from './components/Layout';
 import { TodayScreen } from './screens/TodayScreen';
 import { MoneyScreen } from './screens/MoneyScreen';
@@ -42,7 +43,9 @@ const AppRoot: React.FC = () => {
 const App: React.FC = () => {
   return (
     <StateProvider>
-      <AppRoot />
+      <RadarItemsProvider>
+        <AppRoot />
+      </RadarItemsProvider>
     </StateProvider>
   );
 };
