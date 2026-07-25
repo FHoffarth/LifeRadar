@@ -20,5 +20,9 @@
     "typescript": "5.3.3",
     "vite": "6.4.3",
     "vitest": "3.2.6"
+  },
+  "optionalDependencies": {
+    "@esbuild/linux-x64": "0.25.12",
+    "@rollup/rollup-linux-x64-gnu": "4.62.2"
   }
 }
