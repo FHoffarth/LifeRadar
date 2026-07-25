@@ -52,16 +52,21 @@ export const RadarItemsProvider: React.FC<RadarItemsProviderProps> = ({ children
   }, []);
 
   const createItem = async (input: CreateRadarItemInput): Promise<RadarItem | null> => {
-    const res = radarItemRepository.create(input);
-    if (!res.ok) {
-      setError(res.error);
+    try {
+      const res = radarItemRepository.create(input);
+      if (!res.ok) {
+        setError(res.error);
+        return null;
+      }
+      setItems(prev => [...prev, res.value].sort((a, b) => {
+        if (a.status !== b.status) return a.status === 'active' ? -1 : 1;
+        return a.relevantDate.localeCompare(b.relevantDate);
+      }));
+      return res.value;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Erstellung fehlgeschlagen');
       return null;
     }
-    setItems(prev => [...prev, res.value].sort((a, b) => {
-      if (a.status !== b.status) return a.status === 'active' ? -1 : 1;
-      return a.relevantDate.localeCompare(b.relevantDate);
-    }));
-    return res.value;
   };
 
   const updateItem = async (id: string, changes: UpdateRadarItemInput): Promise<RadarItem | null> => {

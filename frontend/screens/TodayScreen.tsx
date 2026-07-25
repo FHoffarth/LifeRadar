@@ -87,10 +87,6 @@ export const TodayScreen: React.FC = () => {
   const activeRadarItems = radarItems.filter(i => i.status === 'active');
   const completedRadarItems = radarItems.filter(i => i.status === 'completed');
 
-  const handleCreateSuccess = () => {
-    setShowCreateModal(false);
-  };
-
   const handleOpenCreate = () => {
     setShowCreateModal(true);
   };
@@ -286,7 +282,7 @@ export const TodayScreen: React.FC = () => {
       <CreateItemModal
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
-        onSuccess={handleCreateSuccess}
+        onCreate={createItem}
       />
 
       {/* Delete Confirm Modal */}
