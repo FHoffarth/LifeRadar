@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Calendar, Euro, Bell, Save, Loader2 } from 'lucide-react';
-import { CreateRadarItemInput, RadarItemCategory } from '../types';
-import { radarItemRepository } from '../repository/radarItemRepository';
+import { CreateRadarItemInput, RadarItem, RadarItemCategory } from '../types';
 
 const CATEGORIES: { value: RadarItemCategory; label: string }[] = [
   { value: 'contract', label: 'Vertrag' },
@@ -23,10 +22,10 @@ const REMINDER_OPTIONS = [
 interface CreateItemModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onCreate: (input: CreateRadarItemInput) => Promise<RadarItem | null>;
 }
 
-export const CreateItemModal: React.FC<CreateItemModalProps> = ({ isOpen, onClose, onSuccess }) => {
+export const CreateItemModal: React.FC<CreateItemModalProps> = ({ isOpen, onClose, onCreate }) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<RadarItemCategory>('contract');
   const [relevantDate, setRelevantDate] = useState('');
@@ -91,15 +90,18 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({ isOpen, onClos
       notes: notes.trim() || undefined,
     };
 
-    const res = radarItemRepository.create(input);
-    if (!res.ok) {
-      setSubmitError(res.error || 'Speichern fehlgeschlagen');
+    try {
+      const item = await onCreate(input);
       setIsSubmitting(false);
-      return;
+      if (item) {
+        onClose();
+      } else {
+        setSubmitError('Speichern fehlgeschlagen');
+      }
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : 'Speichern fehlgeschlagen');
+      setIsSubmitting(false);
     }
-    onSuccess();
-    onClose();
-    setIsSubmitting(false);
   };
 
   const handleReset = () => {
