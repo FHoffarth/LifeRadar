@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StateProvider } from './StateContext';
 import { RadarItemsProvider } from './context/RadarItemsContext';
 import { Layout } from './components/Layout';
@@ -31,10 +31,25 @@ const AppContent: React.FC = () => {
 };
 
 const AppRoot: React.FC = () => {
-  const [isAppStarted, setIsAppStarted] = useState(false);
+  const [isAppStarted, setIsAppStarted] = useState(() => {
+    return window.location.pathname.startsWith('/app');
+  });
+
+  useEffect(() => {
+    const onPopState = () => {
+      setIsAppStarted(window.location.pathname.startsWith('/app'));
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const handleStart = () => {
+    window.history.pushState({}, '', '/app');
+    setIsAppStarted(true);
+  };
 
   if (!isAppStarted) {
-    return <LandingScreen onStart={() => setIsAppStarted(true)} />;
+    return <LandingScreen onStart={handleStart} />;
   }
 
   return <AppContent />;
